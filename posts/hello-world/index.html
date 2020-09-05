@@ -5,26 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="Hugo 0.74.3" />
 
-  <title>dee</title>
+  <title>Hello Buffer Overflow &middot; dee</title>
 
-  <meta name="description" content="arm exploiting guide" />
+  <meta name="description" content="" />
 
   
 
-<meta itemprop="name" content="dee">
-<meta itemprop="description" content="arm exploiting guide">
+<meta itemprop="name" content="Hello Buffer Overflow">
+<meta itemprop="description" content="Firstly let&rsquo;s connect to the device, then we&rsquo;ll write some basic C app, compile and run.">
+<meta itemprop="datePublished" content="2020-07-28T23:07:00+02:00" />
+<meta itemprop="dateModified" content="2020-07-28T23:07:00+02:00" />
+<meta itemprop="wordCount" content="69">
+
+
+
+<meta itemprop="keywords" content="" />
 
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="dee"/>
-<meta name="twitter:description" content="arm exploiting guide"/>
+<meta name="twitter:title" content="Hello Buffer Overflow"/>
+<meta name="twitter:description" content="Firstly let&rsquo;s connect to the device, then we&rsquo;ll write some basic C app, compile and run."/>
 
 
-<meta property="og:title" content="dee" />
-<meta property="og:description" content="arm exploiting guide" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://dagmarazawada.github.io/" />
-<meta property="og:updated_time" content="2020-08-09T20:07:00+02:00" />
+<meta property="og:title" content="Hello Buffer Overflow" />
+<meta property="og:description" content="Firstly let&rsquo;s connect to the device, then we&rsquo;ll write some basic C app, compile and run." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/hello-world/" />
+<meta property="article:published_time" content="2020-07-28T23:07:00+02:00" />
+<meta property="article:modified_time" content="2020-07-28T23:07:00+02:00" />
 
 
 
@@ -93,7 +101,6 @@
   <link rel="shortcut icon" href="/favicon.png">
 
   
-  <link href="https://dagmarazawada.github.io/index.xml" rel="alternate" type="application/rss+xml" title="dee" />
   </head>
 <body>
   <aside class="sidebar">
@@ -117,14 +124,12 @@
     <nav>
       <ul class="sidebar-nav">
         <li>
-          <a href="https://dagmarazawada.github.io">Home</a>
+          <a href="https://example.com">Home</a>
         </li>
         <li>
           <a href="/posts/">Posts</a>
         </li><li>
           <a href="/about/">About</a>
-        </li><li>
-          <a href="/resources/">Resources</a>
         </li>
       </ul>
     </nav>
@@ -149,61 +154,31 @@
 
 
   <main class="content container">
-  <div class="posts">
-      <article class="post">
-        <h1 class="post-title">
-          <a href="https://dagmarazawada.github.io/posts/0x02_debug_exploit_buffer_overflow/">0x02 Exploiting buffer overflow vulnerability</a>
-        </h1>
+  <div class="post">
+  <h1>Hello Buffer Overflow</h1>
 
-        <div class="post-date">
-          <time datetime="2020-08-08T23:07:00&#43;0200">Aug 8, 2020</time> &middot; 5 min read
-        </div>
-
-        <div>
-          In this example we will disassemble our binary app code in search for hidden function, then we will exploit buffer overflow vulnerability to take advantage of changing our app execution flow.
-        </div>
-
-        <div class="read-more-link">
-          <a href="https://dagmarazawada.github.io/posts/0x02_debug_exploit_buffer_overflow/">Read More</a>
-        </div>
-      </article>
-      <article class="post">
-        <h1 class="post-title">
-          <a href="https://dagmarazawada.github.io/posts/0x01_hello-world/">0x01 Hello Buffer Overflow</a>
-        </h1>
-
-        <div class="post-date">
-          <time datetime="2020-07-28T23:07:00&#43;0200">Jul 28, 2020</time> &middot; 3 min read
-        </div>
-
-        <div>
-          Firstly let&rsquo;s connect to the device, write some simple (vulnerable) C code, compile and run it leading to buffer overflow.
-        </div>
-
-        <div class="read-more-link">
-          <a href="https://dagmarazawada.github.io/posts/0x01_hello-world/">Read More</a>
-        </div>
-      </article>
-      <article class="post">
-        <h1 class="post-title">
-          <a href="https://dagmarazawada.github.io/posts/0x00_init/">Init</a>
-        </h1>
-
-        <div class="post-date">
-          <time datetime="2020-07-27T21:40:28&#43;0200">Jul 27, 2020</time> &middot; 4 min read
-        </div>
-
-        <div>
-          Project objective Main goal of this project is to learn some ARM platfrom exploiting basics, which will further lead to develop some skills in exploiting methods targeted to Apple&rsquo;s devices.
-        </div>
-
-        <div class="read-more-link">
-          <a href="https://dagmarazawada.github.io/posts/0x00_init/">Read More</a>
-        </div>
-      </article>
+  <div class="post-date">
+    <time datetime="2020-07-28T23:07:00&#43;0200">Jul 28, 2020</time> &middot; 1 min read
   </div>
 
-  
+  <p>Firstly let&rsquo;s connect to the device, then we&rsquo;ll write some basic C app, compile and run. I&rsquo;ll be writing, compiling and debugging on device. In this example we&rsquo;ll write first basic buffer overflow program</p>
+<h2 id="001">001</h2>
+<p>So let&rsquo;s create new file, call it <code>001.c</code>, with content:</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    printf(&quot;Hello, enter some data:\n&quot;);
+
+    char buffer[12];
+    scanf(&quot;%s&quot;, buffer);
+    printf(&quot;You entered: %s\n&quot;, buffer);
+
+    return 0;
+}
+</code></pre><p>Compile it:</p>
+
+</div>
 
 
   </main>

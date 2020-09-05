@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://dagmarazawada.github.io/about/</loc>
+    <lastmod>2020-08-27T22:41:34+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dagmarazawada.github.io/resources/ascii_table/</loc>
+    <lastmod>2020-08-09T20:07:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dagmarazawada.github.io/</loc>
+    <lastmod>2020-08-09T20:07:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dagmarazawada.github.io/resources/</loc>
+    <lastmod>2020-08-09T20:07:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dagmarazawada.github.io/posts/0x02_debug_exploit_buffer_overflow/</loc>
+    <lastmod>2020-08-08T23:07:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dagmarazawada.github.io/posts/</loc>
+    <lastmod>2020-08-08T23:07:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dagmarazawada.github.io/posts/0x01_hello-world/</loc>
+    <lastmod>2020-07-28T23:07:00+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dagmarazawada.github.io/posts/0x00_init/</loc>
+    <lastmod>2020-07-27T21:40:28+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dagmarazawada.github.io/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>https://dagmarazawada.github.io/series/</loc>
+  </url>
+  
+  <url>
+    <loc>https://dagmarazawada.github.io/tags/</loc>
+  </url>
+  
+</urlset>

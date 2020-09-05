@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on dee</title>
+    <link>https://dagmarazawada.github.io/posts/</link>
+    <description>Recent content in Posts on dee</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 08 Aug 2020 23:07:00 +0200</lastBuildDate>
+    
+	<atom:link href="https://dagmarazawada.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>0x02 Exploiting buffer overflow vulnerability</title>
+      <link>https://dagmarazawada.github.io/posts/0x02_debug_exploit_buffer_overflow/</link>
+      <pubDate>Sat, 08 Aug 2020 23:07:00 +0200</pubDate>
+      
+      <guid>https://dagmarazawada.github.io/posts/0x02_debug_exploit_buffer_overflow/</guid>
+      <description>In this example we will disassemble our binary app code in search for hidden function, then we will exploit buffer overflow vulnerability to take advantage of changing our app execution flow.</description>
+    </item>
+    
+    <item>
+      <title>0x01 Hello Buffer Overflow</title>
+      <link>https://dagmarazawada.github.io/posts/0x01_hello-world/</link>
+      <pubDate>Tue, 28 Jul 2020 23:07:00 +0200</pubDate>
+      
+      <guid>https://dagmarazawada.github.io/posts/0x01_hello-world/</guid>
+      <description>Firstly let&amp;rsquo;s connect to the device, write some simple (vulnerable) C code, compile and run it leading to buffer overflow.</description>
+    </item>
+    
+    <item>
+      <title>Init</title>
+      <link>https://dagmarazawada.github.io/posts/0x00_init/</link>
+      <pubDate>Mon, 27 Jul 2020 21:40:28 +0200</pubDate>
+      
+      <guid>https://dagmarazawada.github.io/posts/0x00_init/</guid>
+      <description>Project objective Main goal of this project is to learn some ARM platfrom exploiting basics, which will further lead to develop some skills in exploiting methods targeted to Apple&amp;rsquo;s devices.</description>
+    </item>
+    
+  </channel>
+</rss>

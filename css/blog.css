@@ -1,0 +1,42 @@
+html, body {
+    font-family: "Open Sans", sans-serif;
+    /* font-size: 18px; */
+}
+
+.sidebar {
+    background-image: url("/images/poly_bckgrn.jpg");
+    background-size: cover;
+}
+
+.post { 
+    margin-bottom: 3em;
+}
+
+.post h1 {
+    border-left: 3px solid #363636;
+    padding-left: 0.5em;
+    /* margin-bottom: 0; */
+}
+
+.post h2 {
+    border-left: 3px solid #363636;
+    padding-left: 0.5em;
+    margin-bottom: 0;
+}
+
+.read-more-link {
+    font-size: 14px;
+    margin-top: 0;
+}
+
+.read-more-link a {
+    float: right;
+    margin-top: 0;
+}
+
+pre {
+    width: 760px;
+}
+pre > code {
+    font-size: 14px!important;
+}

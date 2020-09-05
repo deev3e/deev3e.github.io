@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Hugo 0.74.3" />
+
+  <title>Init &middot; dee</title>
+
+  <meta name="description" content="" />
+
+  
+
+<meta itemprop="name" content="Init">
+<meta itemprop="description" content="Project objective Main goal of this project is to learn some ARM platfrom exploiting basics, which will further lead to develop some skills in Apple&rsquo;s devices exploiting methods.">
+<meta itemprop="datePublished" content="2020-07-27T21:40:28+02:00" />
+<meta itemprop="dateModified" content="2020-07-27T21:40:28+02:00" />
+<meta itemprop="wordCount" content="394">
+
+
+
+<meta itemprop="keywords" content="" />
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Init"/>
+<meta name="twitter:description" content="Project objective Main goal of this project is to learn some ARM platfrom exploiting basics, which will further lead to develop some skills in Apple&rsquo;s devices exploiting methods."/>
+
+
+<meta property="og:title" content="Init" />
+<meta property="og:description" content="Project objective Main goal of this project is to learn some ARM platfrom exploiting basics, which will further lead to develop some skills in Apple&rsquo;s devices exploiting methods." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/posts/init/" />
+<meta property="article:published_time" content="2020-07-27T21:40:28+02:00" />
+<meta property="article:modified_time" content="2020-07-27T21:40:28+02:00" />
+
+
+
+  
+
+  <link type="text/css"
+        rel="stylesheet"
+        href="/css/print.css"
+        media="print">
+
+  <link type="text/css"
+        rel="stylesheet"
+        href="/css/poole.css">
+
+  <link type="text/css"
+        rel="stylesheet"
+        href="/css/hyde.css">
+
+  
+<style type="text/css">
+  .sidebar {
+    background-color: #333;
+  }
+
+  .read-more-link a {
+    border-color: #333;
+  }
+
+  .pagination li a {
+    color: #333;
+    border: 1px solid #333;
+  }
+
+  .pagination li.active a {
+    background-color: #333;
+  }
+
+  .pagination li a:hover {
+    background-color: #333;
+    opacity: 0.75;
+  }
+
+  footer a,
+  .content a,
+  .related-posts li a:hover {
+    color: #333;
+  }
+</style>
+
+
+
+  <link type="text/css" rel="stylesheet" href="/css/blog.css">
+
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700&display=swap">
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+        integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+        crossorigin="anonymous" />
+
+  <link rel="apple-touch-icon-precomposed"
+        sizes="144x144"
+        href="/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  </head>
+<body>
+  <aside class="sidebar">
+  <div class="container">
+    <div class="sidebar-about">
+      
+        
+        <div class="author-image">
+          <img src="/images/profile.png" class="img-circle img-headshot center" alt="Profile Picture">
+        </div>
+        
+      
+
+      <h1>dee</h1>
+
+      
+      <p class="lead">arm exploiting guide</p>
+      
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li>
+          <a href="https://example.com">Home</a>
+        </li>
+        <li>
+          <a href="/posts/">Posts</a>
+        </li><li>
+          <a href="/about/">About</a>
+        </li>
+      </ul>
+    </nav>
+
+    <section class="social-icons">
+      
+      <a href="https://www.linkedin.com/in/dagmarazawada/" rel="me" title="Linkedin" target="_blank">
+        <i class="fab fa-linkedin" aria-hidden="true"></i>
+      </a>
+      
+      <a href="#" rel="me" title="GitHub" target="_blank">
+        <i class="fab fa-github" aria-hidden="true"></i>
+      </a>
+      
+      <a href="#" rel="me" title="Twitter" target="_blank">
+        <i class="fab fa-twitter" aria-hidden="true"></i>
+      </a>
+      
+    </section>
+  </div>
+</aside>
+
+
+  <main class="content container">
+  <div class="post">
+  <h1>Init</h1>
+
+  <div class="post-date">
+    <time datetime="2020-07-27T21:40:28&#43;0200">Jul 27, 2020</time> &middot; 2 min read
+  </div>
+
+  <h2 id="project-objective">Project objective</h2>
+<p>Main goal of this project is to learn some ARM platfrom exploiting basics, which will further lead to develop some skills in Apple&rsquo;s devices exploiting methods.</p>
+<h2 id="tools-and-devices">Tools and devices</h2>
+<p>Device I already had and could use to this project is iPhone 4S and iPhone 5. Why these ones? They have ARMv7 processors which means they have 32-bit architecture - seems a little bit easier for the begining to me. These devices are also relatively cheap (hello from year 2020), and further on I&rsquo;m aiming in developing skills in exploiting and debugging Apple devices. If you want to follow this guide step-by-step you should have MacBook computer.</p>
+<h2 id="prepare-device">Prepare device</h2>
+<h3 id="jailbreaking">Jailbreaking</h3>
+<p>If you have previous experience with jailbreaking or if you are iOS developer, jailbreaking iPhone 5 with iOS 10.3.4 is quite easy. Steps I took to jailbreak this one are:</p>
+<ol>
+<li>I assume you are on MacBook and you have AppleID created. Open Xcode and start simple project for iOS.</li>
+<li>Connect your iPhone to Mac, in Xcode select iPhone device as build target and try to run this project on it. If you have build problems - read them carefully and try to fix them. Simple project you can run will be added here in sources //TODO</li>
+<li>If your simple project run on device means we have connection established, your signing certificate is working, we&rsquo;re good to go for jailbreaking.</li>
+<li>Download H3lix.ipa from <a href="https://h3lix.tihmstar.net/">https://h3lix.tihmstar.net/</a> (for older iOS versions: Phœnix.ipa from <a href="https://phoenixpwn.com/">https://phoenixpwn.com/</a>)</li>
+<li>Download AppSigner from <a href="https://dantheman827.github.io/ios-app-signer/">https://dantheman827.github.io/ios-app-signer/</a></li>
+<li>Follow the instructions to re-sign app.</li>
+<li>Open Xcode, form the topbar choose Window -&gt; Devices and Simulators</li>
+<li>Choose your iPhone device, click (+) to add your re-signed Phoenix.ipa to install it on device</li>
+<li>Now on your device open Phoenix app, click jailbreak and keep fingers crossed 😉</li>
+<li>In few minutes you should have succefully jailbroken iPhone 4S.</li>
+</ol>
+<p>Same steps as above are suitable to jailbreak other older devices (just the matter of finding proper for iOS system version jailbreak tool).</p>
+<h3 id="what-to-install">What to install?</h3>
+<p>Will start with simple tools: <code>clang, lldb or gdb</code>. Also add some tools from Cydia:</p>
+<ul>
+<li>OpenSSH</li>
+<li>Substrate Safe Mode</li>
+<li>wget, curl, rsync</li>
+<li>theos (<a href="https://github.com/theos/theos/wiki/Installation-iOS">https://github.com/theos/theos/wiki/Installation-iOS</a>)</li>
+</ul>
+<h2 id="how-to-connect-to-device---ssh">How to connect to device - SSH</h2>
+<p>After jailbreaking and installing OpenSSH on device, you should be abble to connect to it. Find your device IP address (in device WiFi network settings) and ssh into it:</p>
+<p><code>ssh root@192.168.1.45</code></p>
+<p>Default password is <code>alpine</code>.</p>
+
+</div>
+
+
+  </main>
+
+  <footer>
+  <div>
+    &copy; dagmara 2020
+
+    &middot; <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank">CC BY-SA 4.0</a>
+
+    
+  </div>
+</footer>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"
+          integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0="
+          crossorigin="anonymous"></script>
+
+  
+
+  
+</body>
+</html>

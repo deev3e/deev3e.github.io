@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Resources on dee</title>
+    <link>https://dagmarazawada.github.io/resources/</link>
+    <description>Recent content in Resources on dee</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 09 Aug 2020 20:07:00 +0200</lastBuildDate>
+    
+	<atom:link href="https://dagmarazawada.github.io/resources/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ASCII codes</title>
+      <link>https://dagmarazawada.github.io/resources/ascii_table/</link>
+      <pubDate>Sun, 09 Aug 2020 20:07:00 +0200</pubDate>
+      
+      <guid>https://dagmarazawada.github.io/resources/ascii_table/</guid>
+      <description>[common ascii codes to know] Char Dec Oct Hex WhatAreThey --------------------------------------- (nul) 0 0000 0x00 Null (ht) 9 0011 0x09 Horizontal Tab (nl) 10 0012 0x0a New Line (vt) 11 0013 0x0b Vertical Tab (cr) 13 0015 0x0d Carriage Return (sp) 32 0040 0x20 Space 0 48 0060 0x30 zero A 65 0101 0x41 capital A a 97 0141 0x61 lowercase a [ascii table] Char Dec Oct Hex | Char Dec Oct Hex | Char Dec Oct Hex | Char Dec Oct Hex ------------------------------------------------------------------------------------- (nul) 0 0000 0x00 | (sp) 32 0040 0x20 | @ 64 0100 0x40 | ` 96 0140 0x60 (soh) 1 0001 0x01 | !</description>
+    </item>
+    
+  </channel>
+</rss>
