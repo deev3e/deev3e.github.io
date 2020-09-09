@@ -6,7 +6,7 @@
     <description>Recent content on dee</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 09 Aug 2020 20:07:00 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 12 Aug 2020 23:07:00 +0200</lastBuildDate>
     
 	<atom:link href="https://dagmarazawada.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -18,6 +18,15 @@
       
       <guid>https://dagmarazawada.github.io/about/</guid>
       <description>This blog is contributed to ARM and iOS exploitation, debugging and testing.</description>
+    </item>
+    
+    <item>
+      <title>0x03 Return Oriented Programming</title>
+      <link>https://dagmarazawada.github.io/posts/0x03_rop/</link>
+      <pubDate>Wed, 12 Aug 2020 23:07:00 +0200</pubDate>
+      
+      <guid>https://dagmarazawada.github.io/posts/0x03_rop/</guid>
+      <description>Assembler Assembly language is based on registers, that can store data or addresses, and each assembly instruction manipulate these registers in some way.</description>
     </item>
     
     <item>
