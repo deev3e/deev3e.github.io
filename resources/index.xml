@@ -6,10 +6,19 @@
     <description>Recent content in Resources on dee</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 09 Aug 2020 20:07:00 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 12 Aug 2020 20:07:00 +0200</lastBuildDate>
     
 	<atom:link href="https://dagmarazawada.github.io/resources/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Interesting resources</title>
+      <link>https://dagmarazawada.github.io/resources/resources/</link>
+      <pubDate>Wed, 12 Aug 2020 20:07:00 +0200</pubDate>
+      
+      <guid>https://dagmarazawada.github.io/resources/resources/</guid>
+      <description>Tutorials, source codes, challanges   https://azeria-labs.com/writing-arm-assembly-part-1/ https://github.com/Billy-Ellis/Exploit-Challenges  </description>
+    </item>
     
     <item>
       <title>ASCII codes</title>
