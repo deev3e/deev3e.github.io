@@ -6,7 +6,7 @@
     <description>Recent content on dee</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 16 Aug 2020 23:07:00 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2020 23:07:00 +0200</lastBuildDate>
     
 	<atom:link href="https://dagmarazawada.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -18,6 +18,15 @@
       
       <guid>https://dagmarazawada.github.io/about/</guid>
       <description>This blog is contributed to ARM and iOS exploitation, debugging and testing.</description>
+    </item>
+    
+    <item>
+      <title>0x05 Runtime patching</title>
+      <link>https://dagmarazawada.github.io/posts/0x05_runtime_patching/</link>
+      <pubDate>Thu, 20 Aug 2020 23:07:00 +0200</pubDate>
+      
+      <guid>https://dagmarazawada.github.io/posts/0x05_runtime_patching/</guid>
+      <description>Runtime patching Runtime patching is the process of patching instructions or variables in a process during it&amp;rsquo;s runtime.</description>
     </item>
     
     <item>

@@ -6,10 +6,19 @@
     <description>Recent content in Posts on dee</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 16 Aug 2020 23:07:00 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2020 23:07:00 +0200</lastBuildDate>
     
 	<atom:link href="https://dagmarazawada.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>0x05 Runtime patching</title>
+      <link>https://dagmarazawada.github.io/posts/0x05_runtime_patching/</link>
+      <pubDate>Thu, 20 Aug 2020 23:07:00 +0200</pubDate>
+      
+      <guid>https://dagmarazawada.github.io/posts/0x05_runtime_patching/</guid>
+      <description>Runtime patching Runtime patching is the process of patching instructions or variables in a process during it&amp;rsquo;s runtime.</description>
+    </item>
     
     <item>
       <title>0x04 ROP gadgets</title>
