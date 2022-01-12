@@ -2,93 +2,93 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>dee</title>
-    <link>https://dagmarazawada.github.io/</link>
+    <link>https://deev3e.github.io/</link>
     <description>Recent content on dee</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Thu, 20 Aug 2020 23:07:00 +0200</lastBuildDate>
     
-	<atom:link href="https://dagmarazawada.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://deev3e.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>About</title>
-      <link>https://dagmarazawada.github.io/about/</link>
+      <link>https://deev3e.github.io/about/</link>
       <pubDate>Thu, 27 Aug 2020 22:41:34 +0200</pubDate>
       
-      <guid>https://dagmarazawada.github.io/about/</guid>
+      <guid>https://deev3e.github.io/about/</guid>
       <description>This blog is contributed to ARM and iOS exploitation, debugging and testing.</description>
     </item>
     
     <item>
       <title>0x05 Runtime patching</title>
-      <link>https://dagmarazawada.github.io/posts/0x05_runtime_patching/</link>
+      <link>https://deev3e.github.io/posts/0x05_runtime_patching/</link>
       <pubDate>Thu, 20 Aug 2020 23:07:00 +0200</pubDate>
       
-      <guid>https://dagmarazawada.github.io/posts/0x05_runtime_patching/</guid>
+      <guid>https://deev3e.github.io/posts/0x05_runtime_patching/</guid>
       <description>Runtime patching  Runtime patching is the process of patching instructions or variables in a process during it&amp;rsquo;s runtime.</description>
     </item>
     
     <item>
       <title>0x04 ROP gadgets</title>
-      <link>https://dagmarazawada.github.io/posts/0x04_rop_gadgets/</link>
+      <link>https://deev3e.github.io/posts/0x04_rop_gadgets/</link>
       <pubDate>Sun, 16 Aug 2020 23:07:00 +0200</pubDate>
       
-      <guid>https://dagmarazawada.github.io/posts/0x04_rop_gadgets/</guid>
+      <guid>https://deev3e.github.io/posts/0x04_rop_gadgets/</guid>
       <description>Gagdets ROP gadget is a small sequence of assembly instructions that end in a return instruction.</description>
     </item>
     
     <item>
       <title>0x03 Return Oriented Programming</title>
-      <link>https://dagmarazawada.github.io/posts/0x03_rop/</link>
+      <link>https://deev3e.github.io/posts/0x03_rop/</link>
       <pubDate>Wed, 12 Aug 2020 23:07:00 +0200</pubDate>
       
-      <guid>https://dagmarazawada.github.io/posts/0x03_rop/</guid>
+      <guid>https://deev3e.github.io/posts/0x03_rop/</guid>
       <description>Assembler Assembly language is based on registers, that can store data or addresses, and each assembly instruction manipulate these registers in some way.</description>
     </item>
     
     <item>
       <title>Interesting resources</title>
-      <link>https://dagmarazawada.github.io/resources/resources/</link>
+      <link>https://deev3e.github.io/resources/resources/</link>
       <pubDate>Wed, 12 Aug 2020 20:07:00 +0200</pubDate>
       
-      <guid>https://dagmarazawada.github.io/resources/resources/</guid>
+      <guid>https://deev3e.github.io/resources/resources/</guid>
       <description>Tutorials, source codes, challanges   https://azeria-labs.com/writing-arm-assembly-part-1/ https://github.com/Billy-Ellis/Exploit-Challenges  </description>
     </item>
     
     <item>
       <title>ASCII codes</title>
-      <link>https://dagmarazawada.github.io/resources/ascii_table/</link>
+      <link>https://deev3e.github.io/resources/ascii_table/</link>
       <pubDate>Sun, 09 Aug 2020 20:07:00 +0200</pubDate>
       
-      <guid>https://dagmarazawada.github.io/resources/ascii_table/</guid>
+      <guid>https://deev3e.github.io/resources/ascii_table/</guid>
       <description>[common ascii codes to know] Char Dec Oct Hex WhatAreThey --------------------------------------- (nul) 0 0000 0x00 Null (ht) 9 0011 0x09 Horizontal Tab (nl) 10 0012 0x0a New Line (vt) 11 0013 0x0b Vertical Tab (cr) 13 0015 0x0d Carriage Return (sp) 32 0040 0x20 Space 0 48 0060 0x30 zero A 65 0101 0x41 capital A a 97 0141 0x61 lowercase a [ascii table] Char Dec Oct Hex | Char Dec Oct Hex | Char Dec Oct Hex | Char Dec Oct Hex ------------------------------------------------------------------------------------- (nul) 0 0000 0x00 | (sp) 32 0040 0x20 | @ 64 0100 0x40 | ` 96 0140 0x60 (soh) 1 0001 0x01 | !</description>
     </item>
     
     <item>
       <title>0x02 Exploiting buffer overflow vulnerability</title>
-      <link>https://dagmarazawada.github.io/posts/0x02_debug_exploit_buffer_overflow/</link>
+      <link>https://deev3e.github.io/posts/0x02_debug_exploit_buffer_overflow/</link>
       <pubDate>Sat, 08 Aug 2020 23:07:00 +0200</pubDate>
       
-      <guid>https://dagmarazawada.github.io/posts/0x02_debug_exploit_buffer_overflow/</guid>
+      <guid>https://deev3e.github.io/posts/0x02_debug_exploit_buffer_overflow/</guid>
       <description>In this example we will disassemble our binary app code in search for hidden function, then we will exploit buffer overflow vulnerability to take advantage of changing our app execution flow.</description>
     </item>
     
     <item>
       <title>0x01 Hello Buffer Overflow</title>
-      <link>https://dagmarazawada.github.io/posts/0x01_hello-world/</link>
+      <link>https://deev3e.github.io/posts/0x01_hello-world/</link>
       <pubDate>Tue, 28 Jul 2020 23:07:00 +0200</pubDate>
       
-      <guid>https://dagmarazawada.github.io/posts/0x01_hello-world/</guid>
+      <guid>https://deev3e.github.io/posts/0x01_hello-world/</guid>
       <description>Firstly let&amp;rsquo;s connect to the device, write some simple (vulnerable) C code, compile and run it leading to buffer overflow.</description>
     </item>
     
     <item>
       <title>Init</title>
-      <link>https://dagmarazawada.github.io/posts/0x00_init/</link>
+      <link>https://deev3e.github.io/posts/0x00_init/</link>
       <pubDate>Mon, 27 Jul 2020 21:40:28 +0200</pubDate>
       
-      <guid>https://dagmarazawada.github.io/posts/0x00_init/</guid>
+      <guid>https://deev3e.github.io/posts/0x00_init/</guid>
       <description>Project objective Main goal of this project is to learn some ARM platfrom exploiting basics, which will further lead to develop some skills in exploiting methods targeted to Apple&amp;rsquo;s devices.</description>
     </item>
     
